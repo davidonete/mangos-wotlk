@@ -6076,6 +6076,7 @@ void Unit::RemoveNotOwnTrackedTargetAuras(uint32 newPhase)
 
 void Unit::RemoveSpellAuraHolder(SpellAuraHolder* holder, AuraRemoveMode mode)
 {
+    MANGOS_ASSERT(holder);
     MANGOS_ASSERT(!holder->IsDeleted());
 
     // Statue unsummoned at holder remove
@@ -6160,7 +6161,8 @@ void Unit::RemoveAura(Aura* Aur, AuraRemoveMode mode)
     // remove from list before mods removing (prevent cyclic calls, mods added before including to aura list - use reverse order)
     if (Aur->GetModifier()->m_auraname < TOTAL_AURAS)
     {
-        m_modAuras[Aur->GetModifier()->m_auraname].remove(Aur);
+        if (std::find(m_modAuras[Aur->GetModifier()->m_auraname].begin(), m_modAuras[Aur->GetModifier()->m_auraname].end(), Aur) != m_modAuras[Aur->GetModifier()->m_auraname].end())
+            m_modAuras[Aur->GetModifier()->m_auraname].remove(Aur);
     }
 
     // Set remove mode
