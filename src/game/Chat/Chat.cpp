@@ -38,7 +38,6 @@
 #include "AhBot.h"
 #include "playerbot.h"
 #include "PlayerbotAIConfig.h"
-#include "GuildTaskMgr.h"
 #endif
 
 // Supported shift-links (client generated and server side)
@@ -994,7 +993,6 @@ ChatCommand* ChatHandler::getCommandTable()
 #endif
         { "rndbot",           SEC_GAMEMASTER,    true,  &ChatHandler::HandleRandomPlayerbotCommand,     "", NULL },
         { "bot",              SEC_PLAYER,        false, &ChatHandler::HandlePlayerbotCommand,               "", NULL },
-        { "gtask",            SEC_GAMEMASTER,    true,  &ChatHandler::HandleGuildTaskCommand,           "", NULL },
         { "pmon",             SEC_GAMEMASTER,    true,  &ChatHandler::HandlePerfMonCommand,           "" },
 #endif
         { "cast",           SEC_ADMINISTRATOR,  false, nullptr,                                           "", castCommandTable     },
