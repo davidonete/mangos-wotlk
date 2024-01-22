@@ -509,10 +509,6 @@ Player::Player(WorldSession* session): Unit(), m_taxiTracker(*this), m_mover(thi
     m_playerbotAI = 0;
     m_playerbotMgr = 0;
 #endif
-#ifdef ENABLE_PLAYERBOTS
-    m_playerbotAI = 0;
-    m_playerbotMgr = 0;
-#endif
     m_speakTime = 0;
     m_speakCount = 0;
 
@@ -708,8 +704,8 @@ Player::Player(WorldSession* session): Unit(), m_taxiTracker(*this), m_mover(thi
     m_fishingSteps = 0;
     
 #ifdef ENABLE_PLAYERBOTS
-    m_playerbotAI = NULL;
-    m_playerbotMgr = NULL;
+    m_playerbotAI = nullptr;
+    m_playerbotMgr = nullptr;
 #endif
 }
 
@@ -761,18 +757,8 @@ Player::~Player()
 #endif
 
 #ifdef ENABLE_PLAYERBOTS
-    if (m_playerbotAI) {
-        {
-            delete m_playerbotAI;
-        }
-        m_playerbotAI = 0;
-    }
-    if (m_playerbotMgr) {
-        {
-            delete m_playerbotMgr;
-        }
-        m_playerbotMgr = 0;
-    }
+    RemovePlayerbotAI();
+    RemovePlayerbotMgr();
 #endif
 }
 
@@ -1771,12 +1757,35 @@ void Player::Update(const uint32 diff)
 }
 
 #ifdef ENABLE_PLAYERBOTS
+void Player::CreatePlayerbotAI()
+{
+    assert(!m_playerbotAI);
+    m_playerbotAI = std::make_unique<PlayerbotAI>(this);
+}
+
+void Player::RemovePlayerbotAI()
+{
+    m_playerbotAI = nullptr;
+}
+
+void Player::CreatePlayerbotMgr()
+{
+    assert(!m_playerbotMgr);
+    m_playerbotMgr = std::make_unique<PlayerbotMgr>(this);
+}
+
+void Player::RemovePlayerbotMgr()
+{
+    m_playerbotMgr = nullptr;
+}
+
 void Player::UpdateAI(const uint32 diff, bool minimal)
 {
     if (m_playerbotAI)
     {
         m_playerbotAI->UpdateAI(diff, minimal);
     }
+
     if (m_playerbotMgr)
     {
         m_playerbotMgr->UpdateAI(diff);
