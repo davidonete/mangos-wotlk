@@ -90,7 +90,7 @@
 #endif
 
 #ifdef ENABLE_IMMERSIVE
-#include "Immersive.h"
+#include "ImmersiveMgr.h"
 #endif
 
 #include <algorithm>
@@ -1206,7 +1206,7 @@ void World::SetInitialWorldSettings()
     sObjectMgr.LoadSQLDBCs();
 
 #ifdef ENABLE_IMMERSIVE
-    sImmersive.Init();
+    sImmersiveMgr.Init();
 #endif
 
     // Load before npc_text, gossip_menu_option, script_texts
@@ -1984,7 +1984,7 @@ void World::Update(uint32 diff)
 #endif
 
 #ifdef ENABLE_IMMERSIVE
-    sImmersive.Update(diff);
+    sImmersiveMgr.Update(diff);
 #endif
 
     /// <li> Handle session updates
