@@ -69,7 +69,6 @@
 #include "World/WorldStateDefines.h"
 #include "World/WorldState.h"
 #include "Anticheat/Anticheat.hpp"
-#include "AI/ScriptDevAI/scripts/custom/Transmogrification.h"
 
 #ifdef BUILD_PLAYERBOT
 #include "PlayerBot/Base/PlayerbotAI.h"
@@ -88,6 +87,10 @@
 
 #ifdef ENABLE_HARDCORE
 #include "HardcoreMgr.h"
+#endif
+
+#ifdef ENABLE_TRANSMOG
+#include "TransmogMgr.h"
 #endif
 
 #include <cmath>
@@ -4808,6 +4811,10 @@ void Player::DeleteFromDB(ObjectGuid playerguid, uint32 accountId, bool updateRe
 
 #ifdef ENABLE_HARDCORE
             sHardcoreMgr.OnPlayerCharacterDeletedFromDB(lowguid);
+#endif
+
+#ifdef ENABLE_TRANSMOG
+            sTransmogMgr.OnPlayerCharacterDeletedFromDB(lowguid);
 #endif
 
             break;
@@ -11805,15 +11812,16 @@ void Player::SetVisibleItemSlot(uint8 slot, Item* pItem)
         SetUInt32Value(PLAYER_VISIBLE_ITEM_1_ENTRYID + (slot * 2), pItem->GetEntry());
         SetUInt16Value(PLAYER_VISIBLE_ITEM_1_ENCHANTMENT + (slot * 2), 0, pItem->GetEnchantmentId(PERM_ENCHANTMENT_SLOT));
         SetUInt16Value(PLAYER_VISIBLE_ITEM_1_ENCHANTMENT + (slot * 2), 1, pItem->GetEnchantmentId(TEMP_ENCHANTMENT_SLOT));
-
-        if (uint32 entry = sTransmogrification->GetFakeEntry(pItem->GetObjectGuid()))
-            SetUInt32Value(PLAYER_VISIBLE_ITEM_1_ENTRYID + (slot * 2), entry);
     }
     else
     {
         SetUInt32Value(PLAYER_VISIBLE_ITEM_1_ENTRYID + (slot * 2), 0);
         SetUInt32Value(PLAYER_VISIBLE_ITEM_1_ENCHANTMENT + (slot * 2), 0);
     }
+
+#ifdef ENABLE_TRANSMOG
+    sTransmogMgr.OnPlayerSetVisibleItemSlot(this, slot, pItem);
+#endif
 }
 
 void Player::VisualizeItem(uint8 slot, Item* pItem)
@@ -11946,7 +11954,10 @@ void Player::MoveItemFromInventory(uint8 bag, uint8 slot, bool update)
             it->RemoveFromWorld();
             it->DestroyForPlayer(this);
         }
-        sTransmogrification->DeleteFakeFromDB(it->GetObjectGuid());
+
+#ifdef ENABLE_TRANSMOG
+        sTransmogMgr.OnPlayerMoveItemFromInventory(this, it);
+#endif
     }
 }
 
