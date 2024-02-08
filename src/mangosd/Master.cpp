@@ -132,7 +132,6 @@ int Master::Run()
     WorldDatabase.AllowAsyncTransactions();
     LoginDatabase.AllowAsyncTransactions();
     LogsDatabase.AllowAsyncTransactions();
-    PlayerbotDatabase.AllowAsyncTransactions();
 
     ///- Catch termination signals
     _HookSignals();
@@ -372,30 +371,6 @@ bool Master::_StartDB()
         return false;
     }
 #endif
-    /// Playerbot Database
-    dbstring = sConfig.GetStringDefault("PlayerbotDatabaseInfo", "");
-    nConnections = sConfig.GetIntDefault("PlayerbotDatabaseConnections", 1);
-    if (dbstring.empty())
-    {
-        sLog.outError("Playerbot Database not specified in configuration file");
-
-        ///- Wait for already started DB delay threads to end
-        WorldDatabase.HaltDelayThread();
-        CharacterDatabase.HaltDelayThread();
-        return false;
-    }
-    sLog.outString("Playerbot Database total connections: %i", nConnections + 1);
-
-    ///- Initialise the Playerbot database
-    if (!PlayerbotDatabase.Initialize(dbstring.c_str(), nConnections))
-    {
-        sLog.outError("Can not connect to Playerbot database %s", dbstring.c_str());
-
-        ///- Wait for already started DB delay threads to end
-        CharacterDatabase.HaltDelayThread();
-        WorldDatabase.HaltDelayThread();
-        return false;
-    }
 
     ///- Get login database info from configuration file
     dbstring = sConfig.GetStringDefault("LoginDatabaseInfo");
@@ -407,7 +382,6 @@ bool Master::_StartDB()
         ///- Wait for already started DB delay threads to end
         WorldDatabase.HaltDelayThread();
         CharacterDatabase.HaltDelayThread();
-        PlayerbotDatabase.HaltDelayThread();
         return false;
     }
 
@@ -420,7 +394,6 @@ bool Master::_StartDB()
         ///- Wait for already started DB delay threads to end
         WorldDatabase.HaltDelayThread();
         CharacterDatabase.HaltDelayThread();
-        PlayerbotDatabase.HaltDelayThread();
         return false;
     }
 
@@ -429,7 +402,6 @@ bool Master::_StartDB()
         ///- Wait for already started DB delay threads to end
         WorldDatabase.HaltDelayThread();
         CharacterDatabase.HaltDelayThread();
-        PlayerbotDatabase.HaltDelayThread();
         LoginDatabase.HaltDelayThread();
         return false;
     }
@@ -444,7 +416,6 @@ bool Master::_StartDB()
         ///- Wait for already started DB delay threads to end
         WorldDatabase.HaltDelayThread();
         CharacterDatabase.HaltDelayThread();
-        PlayerbotDatabase.HaltDelayThread();
         LoginDatabase.HaltDelayThread();
         return false;
     }
@@ -458,7 +429,6 @@ bool Master::_StartDB()
         ///- Wait for already started DB delay threads to end
         WorldDatabase.HaltDelayThread();
         CharacterDatabase.HaltDelayThread();
-        PlayerbotDatabase.HaltDelayThread();
         LoginDatabase.HaltDelayThread();
         return false;
     }
@@ -468,7 +438,6 @@ bool Master::_StartDB()
         ///- Wait for already started DB delay threads to end
         WorldDatabase.HaltDelayThread();
         CharacterDatabase.HaltDelayThread();
-        PlayerbotDatabase.HaltDelayThread();
         LoginDatabase.HaltDelayThread();
         return false;
     }
@@ -484,7 +453,6 @@ bool Master::_StartDB()
         ///- Wait for already started DB delay threads to end
         WorldDatabase.HaltDelayThread();
         CharacterDatabase.HaltDelayThread();
-        PlayerbotDatabase.HaltDelayThread();
         LoginDatabase.HaltDelayThread();
         return false;
     }
