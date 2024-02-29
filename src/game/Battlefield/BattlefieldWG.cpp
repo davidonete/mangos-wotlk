@@ -25,6 +25,10 @@
 #include "Spells/SpellAuras.h"
 #include "Globals/ObjectMgr.h"
 
+#ifdef ENABLE_MODULES
+#include "ModuleMgr.h"
+#endif
+
 BattlefieldWG::BattlefieldWG() : Battlefield()
 {
     m_zoneOwner         = TEAM_NONE;
@@ -1220,6 +1224,10 @@ void BattlefieldWG::UpdatePlayerScore(Player* player)
         default:
             break;
     }
+
+#ifdef ENABLE_MODULES
+        sModuleMgr.OnUpdatePlayerScore(this, player, 0, 0);
+#endif
 }
 
 // Function to send promotion whisper to player

@@ -41,6 +41,10 @@ BattleGroundBE::BattleGroundBE()
 void BattleGroundBE::StartingEventOpenDoors()
 {
     OpenDoorEvent(BG_EVENT_DOOR);
+
+#ifdef ENABLE_MODULES
+    sModuleMgr.OnStartBattleGround(this);
+#endif
 }
 
 bool BattleGroundBE::HandlePlayerUnderMap(Player* player)
