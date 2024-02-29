@@ -25,6 +25,10 @@
 #include "BattleGroundMgr.h"
 #include "Server/WorldPacket.h"
 
+#ifdef ENABLE_MODULES
+#include "ModuleMgr.h"
+#endif
+
 BattleGroundWS::BattleGroundWS() : m_reputationCapture(0), m_honorWinKills(0), m_honorEndKills(0), m_endTimer(0), m_lastCapturedFlagTeam()
 {
     // set battleground start message ids

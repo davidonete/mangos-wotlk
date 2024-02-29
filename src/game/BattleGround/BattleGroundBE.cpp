@@ -23,6 +23,10 @@
 #include "Server/WorldPacket.h"
 #include "Tools/Language.h"
 
+#ifdef ENABLE_MODULES
+#include "ModuleMgr.h"
+#endif
+
 BattleGroundBE::BattleGroundBE()
 {
     // set start delay timers

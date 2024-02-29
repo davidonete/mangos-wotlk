@@ -26,6 +26,10 @@
 #include "Server/WorldPacket.h"
 #include "Globals/ObjectMgr.h"
 
+#ifdef ENABLE_MODULES
+#include "ModuleMgr.h"
+#endif
+
 BattleGroundAB::BattleGroundAB(): m_isInformedNearVictory(false), m_honorTicks(0), m_reputationTics(0)
 {
     m_startMessageIds[BG_STARTING_EVENT_FIRST]  = 0;
