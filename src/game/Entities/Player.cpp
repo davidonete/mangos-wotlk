@@ -24004,7 +24004,7 @@ void Player::HandleFall(MovementInfo const& movementInfo)
                 uint32 final_damage = EnvironmentalDamage(DAMAGE_FALL, damage);
 
 #ifdef ENABLE_MODULES
-                damageReceived = final_damage
+                damageReceived = final_damage;
 #endif
 
                 // recheck alive, might have died of EnvironmentalDamage, avoid cases when player die in fact like Spirit of Redemption case
