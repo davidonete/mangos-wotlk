@@ -23962,8 +23962,9 @@ InventoryResult Player::CanEquipUniqueItem(ItemPrototype const* itemProto, uint8
 void Player::HandleFall(MovementInfo const& movementInfo)
 {
 #ifdef ENABLE_MODULES
-    if (sModuleMgr.OnHandleFall(this, movementInfo, m_lastFallZ))
-        return;
+    uint32 damageReceived = 0;
+    if (!sModuleMgr.OnPreHandleFall(this, movementInfo, m_lastFallZ, damageReceived))
+    {
 #endif
 
     // calculate total z distance of the fall
@@ -24002,6 +24003,10 @@ void Player::HandleFall(MovementInfo const& movementInfo)
                 uint32 original_health = GetHealth();
                 uint32 final_damage = EnvironmentalDamage(DAMAGE_FALL, damage);
 
+#ifdef ENABLE_MODULES
+                damageReceived = final_damage
+#endif
+
                 // recheck alive, might have died of EnvironmentalDamage, avoid cases when player die in fact like Spirit of Redemption case
                 if (IsAlive() && final_damage < original_health)
                     GetAchievementMgr().UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_FALL_WITHOUT_DYING, uint32(z_diff * 100));
@@ -24011,6 +24016,11 @@ void Player::HandleFall(MovementInfo const& movementInfo)
             DEBUG_LOG("FALLDAMAGE z=%f sz=%f pZ=%f FallTime=%d mZ=%f damage=%d SF=%d", position.z, height, GetPositionZ(), movementInfo.GetFallTime(), height, damage, safe_fall);
         }
     }
+
+#ifdef ENABLE_MODULES
+    }
+    sModuleMgr.OnHandleFall(this, movementInfo, m_lastFallZ, damageReceived);
+#endif
 
     RemoveAurasWithInterruptFlags(AURA_INTERRUPT_FLAG_LANDING_CANCELS);
 }
