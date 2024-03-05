@@ -800,7 +800,7 @@ class ChatHandler
         bool HandleWaterwalkCommand(char* args);
         bool HandleQuitCommand(char* args);
         bool HandleShowGearScoreCommand(char* args);
-#ifdef BUILD_PLAYERBOT
+#ifdef BUILD_DEPRECATED_PLAYERBOT
         bool HandlePlayerbotCommand(char* args);
 #endif
 #ifdef ENABLE_PLAYERBOTS
